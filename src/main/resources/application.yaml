@@ -1,0 +1,26 @@
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          api-gateway-provider:
+            issuer-uri: http://localhost:8082/realms/digitalhouse
+        registration:
+          api-gateway-registration:
+            provider: api-gateway-provider
+            client-id: gateway
+            client-secret: KaSpfAezI9Mttjb9qYW3oJCfvEOwXlm6
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:9090/login/oauth2/code/keycloak
+  cloud:
+    gateway:
+      default-filters:
+        - TokenRelay
+      routes:
+        - id: users-service
+          uri: http://localhost:8080
+          predicates:
+            - Path=/users/**
+
+server:
+  port: 9090
